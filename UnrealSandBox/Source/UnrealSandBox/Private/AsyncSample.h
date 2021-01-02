@@ -13,7 +13,8 @@ public:
 	void StartAsyncTask(float WaitSec);
 	void CancelAsyncTask();
 	void CheckAsyncTaskBehaviour();
-
+	void CheckCrash();
+	
 	void Update(float Deltatime);
 
 private:

@@ -25,6 +25,7 @@ public:
 	void StartAsyncSample(float WaitSec);
 	void CheckAsyncTaskBehaviour();
 	void CancelAsyncSample();
+	void CheckAsyncCrash();
 
 private:
 	TSharedPtr<FAsyncSample> AsyncSample;

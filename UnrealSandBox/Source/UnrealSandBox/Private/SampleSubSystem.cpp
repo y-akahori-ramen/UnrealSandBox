@@ -47,6 +47,11 @@ void USampleSubSystem::CancelAsyncSample()
 	AsyncSample->CancelAsyncTask();
 }
 
+void USampleSubSystem::CheckAsyncCrash()
+{
+	AsyncSample->CheckCrash();
+}
+
 void USampleSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);

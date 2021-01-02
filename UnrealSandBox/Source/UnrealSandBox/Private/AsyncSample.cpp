@@ -141,6 +141,25 @@ void FAsyncSample::CheckAsyncTaskBehaviour()
 	}
 }
 
+void FAsyncSample::CheckCrash()
+{
+	using FTaskType = FAsyncTask<FSampleAsyncTask>;
+
+	// 開始する前であれば削除しても安全
+	TSharedPtr<FTaskType> Task = MakeShareable(new FTaskType(1));
+	Task.Reset();
+
+	// 開始する前であればEnsureCompletionはすぐに終了するため基本的に削除前にかならずEnsureCompletionを呼び出すほうが安全
+	Task = MakeShareable(new FTaskType(1));
+	Task->EnsureCompletion();
+	Task.Reset();
+
+	// 開始してからEnsureCompletionを呼び出さないで削除するとクラッシュ
+	Task = MakeShareable(new FTaskType(1));
+	Task->StartBackgroundTask();
+	Task.Reset();
+}
+
 void FAsyncSample::Update(float Deltatime)
 {
 	if (AsyncTask.IsValid() && AsyncTask->IsDone())

@@ -89,4 +89,15 @@ void RegisterSandBoxConsoleCommand()
 		}),
 		ECVF_Default
 	);
+
+	IConsoleManager::Get().RegisterConsoleCommand(
+		TEXT("CheckAsyncCrash"),
+		TEXT("CheckAsyncCrash"),
+		FConsoleCommandDelegate::CreateLambda([]()
+		{
+			USampleSubSystem* SubSystem = ConsoleCommandsInternal::GetSampleSubSystem();
+			SubSystem->CheckAsyncCrash();
+		}),
+		ECVF_Default
+	);
 }
