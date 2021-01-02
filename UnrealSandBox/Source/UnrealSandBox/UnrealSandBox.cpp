@@ -2,6 +2,21 @@
 
 #include "UnrealSandBox.h"
 #include "Modules/ModuleManager.h"
+#include "ConsoleCommands.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, UnrealSandBox, "UnrealSandBox" );
- 
+class FUnrealSandBoxModule final : public FDefaultGameModuleImpl
+{
+public:
+	virtual void StartupModule() override;
+};
+
+void FUnrealSandBoxModule::StartupModule()
+{
+	if (!IsRunningCommandlet())
+	{
+		RegisterSandBoxConsoleCommand();
+	}
+}
+
+
+IMPLEMENT_PRIMARY_GAME_MODULE(FUnrealSandBoxModule, UnrealSandBox, "UnrealSandBox");
