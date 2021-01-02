@@ -22,6 +22,9 @@ public:
 	virtual ETickableTickType GetTickableTickType() const override;
 	
 	void StartAutoDeleteAsyncSample(float WaitSec);
+	void StartAsyncSample(float WaitSec);
+	void CheckAsyncTaskBehaviour();
+	void CancelAsyncSample();
 
 private:
 	TSharedPtr<FAsyncSample> AsyncSample;

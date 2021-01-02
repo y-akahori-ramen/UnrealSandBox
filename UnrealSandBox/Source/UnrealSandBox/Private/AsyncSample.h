@@ -10,7 +10,13 @@ class FAsyncSample final
 public:
 
 	void StartAutoDeleteAsync(float WaitSec);
+	void StartAsyncTask(float WaitSec);
+	void CancelAsyncTask();
+	void CheckAsyncTaskBehaviour();
+
+	void Update(float Deltatime);
 
 private:
 	class FSampleAsyncTask;
+	TSharedPtr<FAsyncTask<FSampleAsyncTask>> AsyncTask;
 };

@@ -14,11 +14,12 @@ TStatId USampleSubSystem::GetStatId() const
 
 void USampleSubSystem::Tick(float DeltaTime)
 {
+	AsyncSample->Update(DeltaTime);
 }
 
 bool USampleSubSystem::IsTickable() const
 {
-	return false;
+	return true;
 }
 
 ETickableTickType USampleSubSystem::GetTickableTickType() const
@@ -29,6 +30,21 @@ ETickableTickType USampleSubSystem::GetTickableTickType() const
 void USampleSubSystem::StartAutoDeleteAsyncSample(float WaitSec)
 {
 	AsyncSample->StartAutoDeleteAsync(WaitSec);
+}
+
+void USampleSubSystem::StartAsyncSample(float WaitSec)
+{
+	AsyncSample->StartAsyncTask(WaitSec);
+}
+
+void USampleSubSystem::CheckAsyncTaskBehaviour()
+{
+	AsyncSample->CheckAsyncTaskBehaviour();
+}
+
+void USampleSubSystem::CancelAsyncSample()
+{
+	AsyncSample->CancelAsyncTask();
 }
 
 void USampleSubSystem::Initialize(FSubsystemCollectionBase& Collection)
