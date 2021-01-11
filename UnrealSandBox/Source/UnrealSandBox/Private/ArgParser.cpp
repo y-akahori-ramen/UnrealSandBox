@@ -6,7 +6,7 @@
 
 void FArgParser::AddArg(const FString& ArgName, bool bRequired, EType ValidateType)
 {
-	if (!ensureAlwaysMsgf(!bIsValid.IsSet(), TEXT("すでにパース済みです")))
+	if (!ensureAlwaysMsgf(!bIsValid.IsSet(), TEXT("すでにパース済みです。引数情報を変更するには一度リセットしてください。")))
 	{
 		return;
 	}
@@ -50,6 +50,14 @@ void FArgParser::Reset()
 	ArgInfos.Reset();
 }
 
+bool FArgParser::IsExistValue(const FString& ArgName) const
+{
+	return bIsValid.IsSet() &&
+		bIsValid.GetValue() &&
+		ArgInfos.Contains(ArgName) &&
+		ArgInfos[ArgName].IsParsed();
+}
+
 bool FArgParser::IsValidArg(const FString& ArgName, EType RequiredType) const
 {
 	if (bIsValid.IsSet() && bIsValid.GetValue())
@@ -59,8 +67,8 @@ bool FArgParser::IsValidArg(const FString& ArgName, EType RequiredType) const
 		if (bIsValidArg)
 		{
 			const FArgInfo& ArgInfo = ArgInfos[ArgName];
-			const bool bIsValidArgType = ArgInfo.GetValidateType() == EType::None ||
-				RequiredType == EType::None ||
+			const bool bIsValidArgType = ArgInfo.GetValidateType() == EType::String ||
+				RequiredType == EType::String ||
 				ArgInfo.GetValidateType() == RequiredType;
 
 			ensureAlwaysMsgf(bIsValidArgType, TEXT("引数 %s が求められている型と一致しません"), *ArgName);
@@ -122,7 +130,7 @@ bool FArgParser::GetValue(const FString& ArgName, float& Value) const
 
 bool FArgParser::GetValue(const FString& ArgName, FString& Value) const
 {
-	if (IsValidArg(ArgName, EType::None))
+	if (IsValidArg(ArgName, EType::String))
 	{
 		Value = ArgInfos[ArgName].GetParsedValue();
 		return true;
@@ -256,7 +264,7 @@ bool FArgParser::FArgInfo::ValidateArgType(const FString& ArgName, const FString
 {
 	switch (validateType)
 	{
-	case EType::None:
+	case EType::String:
 		return true;
 	case EType::Bool:
 		if (ArgValue.ToUpper() == TEXT("TRUE"))

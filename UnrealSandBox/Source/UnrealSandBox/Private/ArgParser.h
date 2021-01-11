@@ -15,7 +15,7 @@ FArgParser ArgParser;
 ArgParser.AddArg(TEXT("-pos"), true, FArgParser::EType::Vector);
 ArgParser.AddArg(TEXT("-intValue"), false, FArgParser::EType::Integer);
 
-// 文字列をパースして引数の値を取得する
+// 文字列をパースして引数の値を取得する ※空白を含む文字列は""で囲む必要があります
 const FString Command = TEXT("SampleCommand -pos \"V(X=10.00, Y=20.00, Z=30.00)\" -intValue -1234");
 FVector VectorValue;
 int32 IntValue;
@@ -39,8 +39,8 @@ public:
 	 */
 	enum class EType
 	{
-		// なし。型チェック実行されません。
-		None,
+		// 文字列
+		String,
 		// 整数値
 		Integer,
 		// 浮動小数値
@@ -53,11 +53,12 @@ public:
 
 	/**
 	 * @brief 引数情報追加
+	 *		　 一度パースを行うと追加できなくなります。パース後に変更する際はResetを呼び出してください。
 	 * @param ArgName 引数名
 	 * @param bRequired 必須引数か
 	 * @param ValidateType 引数の値に求める型
 	 */
-	void AddArg(const FString& ArgName, bool bRequired = false, EType ValidateType = EType::None);
+	void AddArg(const FString& ArgName, bool bRequired = false, EType ValidateType = EType::String);
 
 	/**
 	 * @brief 引数パース
@@ -70,10 +71,16 @@ public:
 
 
 	/**
-	 * @brief パースした情報をリセットします
+	 * @brief パースした情報と登録した引数情報をリセットします
 	 */
 	void Reset();
 
+	/**
+	 * @brief 引数の値が存在するか
+	 * @param ArgName 引数名
+	 */
+	bool IsExistValue(const FString& ArgName) const;
+	
 	// パースした値取得。取得に失敗する場合falseを返します。
 	bool GetValue(const FString& ArgName, int8& Value) const;
 	bool GetValue(const FString& ArgName, int16& Value) const;
